@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1, user-scalable=no">
+<title>醒醒的表情包生成器</title>
+<style>
+    #headline{
+        text-align: center;
+        margin-top: 50px;
+        font-size: 30px;
+        font-family:MicrosoftYaHei;
+        color:darkslategrey;
+    }
+    p{
+        position:absolute;
+        left: 51%;
+        font-size:22px;
+        width: 400px;
+        height: 36px;
+        color:darkslategray;
+        z-index: -1;
+    }
+    #word{top:100px}#size{top:170px}#color{top:240px}#bili{top:380px;}#tiezhi{top: 450px;}
+    #xxx{
+        position:absolute;
+        left: 51%;
+        font-size:22px;
+        width: 400px;
+        height: 36px;
+        top:330px;
+        color:darkslategray;}
+
+    .input-text{
+        position: absolute;
+        left: 100px;
+        width: 400px;
+        height: 32px;
+        line-height: 32px;
+        padding-left: 0px;
+        background: rgb(255, 255, 255);
+        border-radius: 1px;
+        border: 1px solid rgb(221, 221, 221);
+        font-size: 18px;
+        font-family: MicrosoftYaHei;
+        color: rgb(51, 51, 51);
+        cursor: pointer;
+    }
+
+    #font{
+        position:absolute;
+        left: 100px;
+        top:0px;
+        width: 400px;
+        height: 36px;
+    }
+    #content{
+    width: 400px;
+    height: 36px;
+
+    line-height: 36px;
+    padding-left: 0px;
+    background: rgb(255, 255, 255);
+    border-radius: 1px;
+    border: 1px solid rgb(221, 221, 221);
+    font-size: 16px;
+    font-family: MicrosoftYaHei;
+    color: rgb(51, 51, 51);
+    cursor: pointer;
+  }
+  #selectImg{
+    position: absolute;
+    top:13px;
+    right: 0px;
+    width: 200px;height: 30px;
+    cursor: pointer;
+    }
+  #selectItem{
+    display: none;
+    border: 1px solid #eee;
+    width: 200px;
+    margin:0px;
+    padding: 0px;
+  }
+  #selectItem ul{
+    list-style: none;
+    background-color:#ffffff;
+    margin:0px;
+    padding-left: 5px;
+  }
+  #selectItem ul li{
+    height: 30px;
+    line-height: 30px;
+    padding-left: 0px;
+    cursor: pointer;
+  }
+  #selectItem ul li:hover{
+    background-color:#f5f7fa;
+  }
+  /*--预览框--*/
+  .preview{
+    position: absolute;
+    top:100px;
+    left:15%;
+    width:300px;
+    height:300px;
+    border:1px solid #eee;
+    margin:0;
+  }
+  #preimg{
+    position: absolute;
+    top:0px;
+    left:0px;
+    width: 300px;
+    height:300px;
+  }
+  #preword{
+    position: absolute;
+    top:0px;
+    left:0px;
+    font-size: 16px;
+    display: inline-block;
+  }
+  /*--按钮--*/
+
+.a-upload {
+  text-decoration:none;
+    padding: 3px 22px;
+    height: 32px;
+    font-size: 20px;
+    line-height: 32px;
+    position: absolute;
+    top:0;
+    left:0;
+    width: 84px;
+    cursor: pointer;
+    color: #888;
+    background: rgb(246, 248, 250);
+    border: 1px solid rgb(163, 163, 163);
+    border-radius: 4px;
+    overflow: hidden;
+    display: inline-block;
+    *display: inline;
+    *zoom: 1
+}
+.muban{
+  padding: 3px 15px;
+    height: 40px;
+    font-size: 20px;
+    line-height: 32px;
+    position: absolute;
+    top:0px;
+    left:150px;
+    width: 150px;
+    cursor: pointer;
+    color: #888;
+    background: rgb(246, 248, 250);
+    border: 1px solid rgb(163, 163, 163);
+    border-radius: 4px;
+    overflow: hidden;
+    display: inline-block;
+}
+.down{
+    padding: 3px 15px;
+    height: 40px;
+    font-size: 20px;
+    line-height: 32px;
+    position: absolute;
+    top:50px;
+    left:0px;
+    width: 300px;
+    cursor: pointer;
+    color: #888;
+    background: rgb(246, 248, 250);
+    border: 1px solid rgb(163, 163, 163);
+    border-radius: 4px;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.a-upload  input {
+    position: absolute;
+    font-size: 100px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    cursor: pointer
+}
+
+.a-upload:hover {
+    color: #888;
+    background: rgb(223, 235, 247);
+    border-color: #ccc;
+    text-decoration: none
+}
+.sticker{
+  position: absolute;
+  width: 50px;
+  height: 50px;
+}
+#s1{left:38px;}#s2{left: 126px;}#s3{left: 214px;}
+.tip{
+  position:absolute;
+  width: 45px;height: 45px;
+}
+</style>
+</head>
+
+
+
+<body>
+
+<div id="headline">------------------表情包生成--------------------</div>
+<!--预览框块，包括一个图片和一个段落 -->
+
+<div class="preview">
+<canvas width=300 height=300 id="preimg" ></canvas>
+  <span  id="preword">示例文字</span>
+  <img class="tip" id="t1" draggable="false" /><img class="tip" id="t2" draggable="false" /><img class="tip" id="t3" draggable="false" />
+</div>
+<!--导入 下载按键-->
+<div style="position: absolute;left: 15%;top: 420px;">
+  <a href="" class="a-upload"><input type="file"  id="sbrowse" multiple="" onchange="imageget(this)">上传图片</a>
+  <button class="muban"  onclick="bamboo();">熊猫头模板</button>
+  <a class="download" href="javascript:void(0);" download="downImg"></a><button class="down"  onclick="generate();">下载到本地</button>
+</div>
+
+
+<!--右边文字说明加输入框-->
+    <p id="word">内容：<input id="iword" type="text" class="input-text" oninput="window.inputword" value="示例文字"/></p>
+    <p id="size">大小：<input id="isize" type="text" class="input-text" value="16"/></p>   
+    <p id="color">颜色：<input id="icolor" type=color class="input-text" value="示例文字"/></p>
+<!--字体-->
+<div id="xxx">字体：
+  <div id="font">
+
+    <div id="content"> </div>
+    <canvas id="selectImg" alt=""></canvas>
+
+    <div id="selectItem"> </div>
+    <!--  <ul>
+        <li data-value="1">宋体</li>
+        <li data-value="2">黑体</li>
+        <li data-value="3">微软雅黑</li>
+      </ul>-->
+
+  </div></div>
+
+    <p id="bili">缩放比例：<input id="ibili" class="input-text" value="1"/></p>
+   <!--贴纸-->
+    <p id="tiezhi">贴纸：</p>
+    <div style="position: absolute;left: 51%;top: 450px;"><div style="position: absolute;left: 100px;top: 5px;">
+    <img class="sticker" id="s1" src="./src/星星.png"/><img class="sticker" id="s2" src="./src/月球.png"/><img class="sticker" id="s3" src="./src/爱心.png"/>
+    </div></div>
+ 
+
+
+<script src="http://code.jquery.com/jquery-git.js"></script>
+<script type="text/javascript" src="./jquery.mac.mousewheel.js"></script>
+<script type="text/javascript" src="./html2canvas.min.js"></script>
+
+<script src="./generate.js"></script>
+<script src="./wordchange.js"></script>
+<script src="./font.js"></script>
+<script src="./wordmove.js"></script>
+<script src="./imageget.js"></script>
+<script src="./imagecut.js"></script>
+<script src="./sticker.js"></script>
+<script src="./srcbase.js"></script>
+<script>
+   $("canvas").macMouseWheel({
+    captureTime : 50, //移动效果可放大缩小这个效果
+    //手势解析，上/下/左/右/放大/缩小
+    onGesture : function(gesture){
+        //console.log(gesture);
+        var b=document.querySelector("#ibili").value;
+        switch(gesture){
+            case 'zoom':
+                b *= 1.2;
+                break;
+            case 'mini':
+                b /= 1.2;
+                break;
+            default:break;
+        }
+        document.querySelector("#ibili").value=b;
+        bili=300/b;
+        ctx.clearRect(0,0,300,300);
+        ctx.drawImage(image1,image1.sX,image1.sY,bili,bili,0,0,300,300);
+    }
+});
+</script>
+
+</body>
+</html>
